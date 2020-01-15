@@ -162,6 +162,10 @@ class MessageSocket(Thread):
             LOG.error('connection error %s "%s:%s" %s'
                       % (err.errno, server, port_number, err.strerror))
             return
+        except Exception as err:  # Needed for Python 2.7.
+            LOG.error('connection error "%s:%s" %s'
+                      % (server, port_number, err))
+            return
         self.connected = True
         ipv4, port = self._socket.getpeername()
         self.name = '%s[%s:%s]' % (server, ipv4, port)
