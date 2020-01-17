@@ -7,7 +7,7 @@ FUNCTION:  Provides classes and methods to reliably receive and send fixed-
    USAGE:  messagesocket is imported and used within main programs.  It is
            compatible with Python 2.7.16 and all versions of Python 3.x.
   AUTHOR:  papamac
- VERSION:  1.0.11
+ VERSION:  1.0.12
     DATE:  January 17, 2020
 
 
@@ -44,7 +44,7 @@ DEPENDENCIES/LIMITATIONS:
 
 """
 __author__ = 'papamac'
-__version__ = '1.0.11'
+__version__ = '1.0.12'
 __date__ = 'January 17, 2020'
 
 
@@ -320,7 +320,7 @@ class MessageSocket(Thread):
                 return
 
             # Segment sent; continue.
-            
+
             bytes_sent += segment_bytes_sent
 
         # Full-length byte_msg sent.
@@ -366,7 +366,7 @@ class MessageStatus:
                                   self._seq_errs, min_, self._max, avg, std,
                                   self._recvd, recv_rate))
                 send_rate = self._sent / interval
-                send_status = ('send[%i %i]' % (self._sent, send_rate))
+                send_status = 'send[%i %i]' % (self._sent, send_rate)
                 errs = (self._shorts + self._crc_errs + self._dt_errs +
                         self._seq_errs or self._max > 1000.0 * SOCKET_TIMEOUT)
                 level = ERROR if errs else DEBUG
