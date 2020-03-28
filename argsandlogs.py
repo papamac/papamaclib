@@ -11,8 +11,8 @@ FUNCTION:  argsandlogs provides generalized definition and parsing of
            because of its use of the pathlib package and also because it uses
            the reserved function name print as a variable.
   AUTHOR:  papamac
- VERSION:  1.0.3
-    DATE:  January 6, 2020
+ VERSION:  1.0.4
+    DATE:  March 28, 2020
 
 
 MIT LICENSE:
@@ -48,8 +48,8 @@ DEPENDENCIES/LIMITATIONS:
 
 """
 __author__ = 'papamac'
-__version__ = '1.0.3'
-__date__ = 'January 6, 2020'
+__version__ = '1.0.4'
+__date__ = ' March 28, 2020'
 
 
 from argparse import ArgumentParser
@@ -92,8 +92,7 @@ class AL:
 
         cls.parser.add_argument('-p', '--print', choices=['THREAD_DEBUG',
                     'DEBUG', 'DATA', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
-                    help='optional printing to sys.stdout and printing level',
-                    default='DATA')
+                    help='optional printing to sys.stdout and printing level')
         cls.parser.add_argument('-l', '--log', choices=['THREAD_DEBUG',
                     'DEBUG', 'DATA', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
                     help='optional file logging and logging level')
@@ -105,11 +104,6 @@ class AL:
         addLevelName(THREAD_DEBUG, 'THREAD_DEBUG')
         addLevelName(DATA, 'DATA')
         cls._log.setLevel(THREAD_DEBUG)
-
-        if hasattr(cls.args, 'daemon') and cls.args.daemon:
-            cls.args.print = None
-            if cls.args.log is None:
-                cls.args.log = 'DATA'
 
         if cls.args.print:
             print_handler = StreamHandler()
