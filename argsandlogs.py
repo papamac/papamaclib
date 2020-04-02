@@ -12,7 +12,7 @@ FUNCTION:  argsandlogs provides generalized definition and parsing of
            the reserved function name print as a variable.
   AUTHOR:  papamac
  VERSION:  1.0.4
-    DATE:  March 28, 2020
+    DATE:  March 31, 2020
 
 
 MIT LICENSE:
@@ -49,7 +49,7 @@ DEPENDENCIES/LIMITATIONS:
 """
 __author__ = 'papamac'
 __version__ = '1.0.4'
-__date__ = ' March 28, 2020'
+__date__ = ' March 31, 2020'
 
 
 from argparse import ArgumentParser
@@ -80,7 +80,7 @@ class AL:
     args = None
 
     @classmethod
-    def start(cls):
+    def start(cls, version=''):
         # Parse command line arguments, initialize printing/logging and log
         # main program starting message.
 
@@ -147,9 +147,11 @@ class AL:
                 log_handler.setFormatter(log_formatter)
                 cls._log.addHandler(log_handler)
 
-        args = str(cls.args).split('(')[1][:-1]
-        LOG.blue('starting %s with the following arguments/defaults:\n%s'
-                 % (cls.name, args))
+        if version:
+            version = ' v' + version
+        LOG.blue('starting %s%s with the following arguments/defaults:'
+                 % (cls.name, version))
+        LOG.blue('%s' % str(cls.args).split('(')[1][:-1])
 
     @classmethod
     def stop(cls):
