@@ -11,8 +11,8 @@ FUNCTION:  argsandlogs provides generalized definition and parsing of
            because of its use of the pathlib package and also because it uses
            the reserved function name print as a variable.
   AUTHOR:  papamac
- VERSION:  1.0.4
-    DATE:  March 31, 2020
+ VERSION:  1.0.5
+    DATE:  April 7, 2020
 
 
 MIT LICENSE:
@@ -48,8 +48,8 @@ DEPENDENCIES/LIMITATIONS:
 
 """
 __author__ = 'papamac'
-__version__ = '1.0.4'
-__date__ = ' March 31, 2020'
+__version__ = '1.0.5'
+__date__ = 'April 7, 2020'
 
 
 from argparse import ArgumentParser
@@ -62,13 +62,9 @@ from . import colortext
 from .colortext import DATA, THREAD_DEBUG
 
 
-# Global constants.
+# Global constant.
 
 LOG = colortext.getLogger('Plugin')
-
-DYNAMIC_PORT_RANGE = range(49152, 65535)  # Range of valid dynamic ports.
-DEFAULT_PORT_NUMBER = 50000               # An arbitrary selection from the
-#                                           DYNAMIC_PORT_RANGE.
 
 
 class AL:
@@ -81,15 +77,10 @@ class AL:
 
     @classmethod
     def start(cls, version=''):
-        # Parse command line arguments, initialize printing/logging and log
-        # main program starting message.
-
-        # printing (-p) defaults to 'DATA' and logging (-l) defaults to None
-        # if they are omitted from the command line.  If the daemon option (-d)
-        # is set, printing is set to None regardless of its command line
-        # setting and logging is set to 'DATA' if it was omitted from the
-        # command line.
-
+        """
+        Parse command line arguments, initialize printing/logging and log main
+        program starting message.
+        """
         cls.parser.add_argument('-p', '--print', choices=['THREAD_DEBUG',
                     'DEBUG', 'DATA', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
                     help='optional printing to sys.stdout and printing level')
@@ -97,8 +88,8 @@ class AL:
                     'DEBUG', 'DATA', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
                     help='optional file logging and logging level')
         cls.parser.add_argument('-L', '--log_directory',
-                    help='top-level log directory (full pathname or relative)',
-                    default='/var/local/log')
+                    default='/var/local/log',
+                    help='top-level log directory (full pathname or relative)')
         cls.args = cls.parser.parse_args()
 
         addLevelName(THREAD_DEBUG, 'THREAD_DEBUG')
@@ -112,25 +103,9 @@ class AL:
             print_handler.setFormatter(print_formatter)
             cls._log.addHandler(print_handler)
 
-        log_name = cls.name.lower()
-        if hasattr(cls.args, 'port_number'):
-            port_number = DEFAULT_PORT_NUMBER
-            if cls.args.port_number:
-                port = 0
-                if cls.args.port_number.isnumeric():
-                    port = int(cls.args.port_number)
-                if port in DYNAMIC_PORT_RANGE:
-                    port_number = port
-                else:
-                    warning = ('invalid port number "%s"; default used'
-                               % cls.args.port_number)
-                    LOG.warning(warning)
-            cls.args.port_number = port_number
-            log_name += str(port_number)
-
         if cls.args.log:
-            dir_path = Path(cls.args.log_directory) / Path(cls.name.lower())
-            log_path = dir_path / Path(log_name + '.log')
+            dir_path = Path(cls.args.log_directory)
+            log_path = dir_path / Path(cls.name.lower() + '.log')
             try:
                 dir_path.mkdir(parents=True, exist_ok=True)
                 log_handler = TimedRotatingFileHandler(log_path,
