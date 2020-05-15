@@ -7,8 +7,8 @@ FUNCTION:  Provides classes and methods to reliably receive and send fixed-
    USAGE:  messagesocket is imported and used within main programs.  It is
            compatible with Python 2.7.16 and all versions of Python 3.x.
   AUTHOR:  papamac
- VERSION:  1.0.12
-    DATE:  January 17, 2020
+ VERSION:  1.0.13
+    DATE:  May 15, 2020
 
 
 MIT LICENSE:
@@ -44,8 +44,8 @@ DEPENDENCIES/LIMITATIONS:
 
 """
 __author__ = 'papamac'
-__version__ = '1.0.12'
-__date__ = 'January 17, 2020'
+__version__ = '1.0.13'
+__date__ = 'May 15, 2020'
 
 
 from binascii import crc32
@@ -145,7 +145,7 @@ class MessageSocket(Thread):
         hostname = self.recv()
         if hostname:
             self.name = hostname + self.name
-            LOG.info('connected "%s"' % self.name)
+            LOG.info('connected "%s"', self.name)
             self._status = MessageStatus(self.name)
         else:
             err_msg = 'connection aborted "%s"' % self.name
@@ -163,19 +163,18 @@ class MessageSocket(Thread):
         try:
             self._socket.connect((server, port_number))
         except timeout:
-            LOG.error('connection timeout "%s:%s"' % (server, port_number))
+            LOG.error('connection timeout "%s:%s"', server, port_number)
             return
         except gaierror as err:
-            LOG.error('server address error "%s:%s" %s'
-                      % (server, port_number, err))
+            LOG.error('server address error "%s:%s" %s', server, port_number,
+                      err)
             return
         except OSError as err:
-            LOG.error('connection error "%s:%s" %s'
-                      % (server, port_number, err))
+            LOG.error('connection error "%s:%s" %s', server, port_number, err)
             return
         except Exception as err:  # Catch-all needed for Python 2.7.
-            LOG.error('connection exception "%s:%s" %s'
-                      % (server, port_number, err))
+            LOG.error('connection exception "%s:%s" %s', server, port_number,
+                      err)
             return
 
         # Connected; send hostname to server.
@@ -183,7 +182,7 @@ class MessageSocket(Thread):
         self.connected = True
         ipv4, port = self._socket.getpeername()
         self.name = '%s[%s:%s]' % (server, ipv4, port)
-        LOG.info('connected "%s"' % self.name)
+        LOG.info('connected "%s"', self.name)
         self._status = MessageStatus(self.name)
         self.send(gethostname())
 
@@ -237,11 +236,11 @@ class MessageSocket(Thread):
                 self._shutdown(err_msg)
                 return
             except OSError as err:
-                err_msg = ('recv error "%s" %s' % (self.name, err))
+                err_msg = 'recv error "%s" %s' % (self.name, err)
                 self._shutdown(err_msg)
                 return
             except Exception as err:  # Catch-all exception, just in case.
-                err_msg = ('recv exception "%s" %s' % (self.name, err))
+                err_msg = 'recv exception "%s" %s' % (self.name, err)
                 self._shutdown(err_msg)
                 return
             if not segment:  # Null segment; peer disconnected.
@@ -278,7 +277,7 @@ class MessageSocket(Thread):
 
         message = message.strip()
         if len(message) > DATA_LEN:
-            LOG.warning('message truncated "%s"' % message)
+            LOG.warning('message truncated "%s"', message)
             message = message[:DATA_LEN]
 
         # Add the crc, sequence number, and datetime to create a fixed-length
@@ -370,8 +369,8 @@ class MessageStatus:
                 errs = (self._shorts + self._crc_errs + self._dt_errs +
                         self._seq_errs or self._max > 1000.0 * SOCKET_TIMEOUT)
                 level = ERROR if errs else DEBUG
-                LOG.log(level, 'status "%s" %s %s'
-                               % (self._name, recv_status, send_status))
+                LOG.log(level, 'status "%s" %s %s', self._name, recv_status,
+                        send_status)
                 self._init()  # Initialize status data for the next interval.
 
     # Public methods.
@@ -458,7 +457,7 @@ class MessageServer:
         self._socket.listen(5)
         ipv4, port = self._socket.getsockname()
         name = '%s[%s:%s]' % (gethostname(), ipv4, port)
-        LOG.warning('accepting client connections "%s"' % name)
+        LOG.warning('accepting client connections "%s"', name)
         while self.running:
             try:
                 client_socket, client_address_tuple = self._socket.accept()

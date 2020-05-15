@@ -11,8 +11,8 @@ FUNCTION:  argsandlogs provides generalized definition and parsing of
            because of its use of the pathlib package and also because it uses
            the reserved function name print as a variable.
   AUTHOR:  papamac
- VERSION:  1.0.5
-    DATE:  April 7, 2020
+ VERSION:  1.0.6
+    DATE:  May 15, 2020
 
 
 MIT LICENSE:
@@ -48,8 +48,8 @@ DEPENDENCIES/LIMITATIONS:
 
 """
 __author__ = 'papamac'
-__version__ = '1.0.5'
-__date__ = 'April 7, 2020'
+__version__ = '1.0.6'
+__date__ = 'May, 2020'
 
 
 from argparse import ArgumentParser
@@ -124,13 +124,13 @@ class AL:
 
         if version:
             version = ' v' + version
-        LOG.blue('starting %s%s with the following arguments/defaults:'
-                 % (cls.name, version))
-        LOG.blue('%s' % str(cls.args).split('(')[1][:-1])
+        LOG.blue('starting %s%s with the following arguments/defaults:',
+                 cls.name, version)
+        LOG.blue('%s', str(cls.args).split('(')[1][:-1])
 
     @classmethod
     def stop(cls):
 
         # Log main program stopping message.
 
-        LOG.blue('stopping %s' % cls.name)
+        LOG.blue('stopping %s', cls.name)
