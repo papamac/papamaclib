@@ -18,6 +18,7 @@
       <w>recv</w>
       <w>recvd</w>
       <w>strerr</w>
+      <w>threaddebug</w>
     </words>
   </dictionary>
 </component>

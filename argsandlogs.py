@@ -11,8 +11,8 @@ FUNCTION:  argsandlogs provides generalized definition and parsing of
            because of its use of the pathlib package and also because it uses
            the reserved function name print as a variable.
   AUTHOR:  papamac
- VERSION:  1.0.6
-    DATE:  May 15, 2020
+ VERSION:  1.0.7
+    DATE:  May 16, 2020
 
 
 MIT LICENSE:
@@ -48,8 +48,8 @@ DEPENDENCIES/LIMITATIONS:
 
 """
 __author__ = 'papamac'
-__version__ = '1.0.6'
-__date__ = 'May, 2020'
+__version__ = '1.0.7'
+__date__ = 'May 18, 2020'
 
 
 from argparse import ArgumentParser
@@ -59,7 +59,7 @@ from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
 from . import colortext
-from .colortext import DATA, THREAD_DEBUG
+from .colortext import DATA, THREADDEBUG
 
 
 # Global constant.
@@ -81,10 +81,10 @@ class AL:
         Parse command line arguments, initialize printing/logging and log main
         program starting message.
         """
-        cls.parser.add_argument('-p', '--print', choices=['THREAD_DEBUG',
+        cls.parser.add_argument('-p', '--print', choices=['THREADDEBUG',
                     'DEBUG', 'DATA', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
                     help='optional printing to sys.stdout and printing level')
-        cls.parser.add_argument('-l', '--log', choices=['THREAD_DEBUG',
+        cls.parser.add_argument('-l', '--log', choices=['THREADDEBUG',
                     'DEBUG', 'DATA', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
                     help='optional file logging and logging level')
         cls.parser.add_argument('-L', '--log_directory',
@@ -92,9 +92,9 @@ class AL:
                     help='top-level log directory (full pathname or relative)')
         cls.args = cls.parser.parse_args()
 
-        addLevelName(THREAD_DEBUG, 'THREAD_DEBUG')
+        addLevelName(THREADDEBUG, 'THREADDEBUG')
         addLevelName(DATA, 'DATA')
-        cls._log.setLevel(THREAD_DEBUG)
+        cls._log.setLevel(THREADDEBUG)
 
         if cls.args.print:
             print_handler = StreamHandler()
@@ -103,6 +103,7 @@ class AL:
             print_handler.setFormatter(print_formatter)
             cls._log.addHandler(print_handler)
 
+        LOG.threaddebug('AL.start called')
         if cls.args.log:
             dir_path = Path(cls.args.log_directory)
             log_path = dir_path / Path(cls.name.lower() + '.log')
@@ -130,6 +131,7 @@ class AL:
 
     @classmethod
     def stop(cls):
+        LOG.threaddebug('AL.stop called')
 
         # Log main program stopping message.
 
