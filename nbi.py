@@ -8,8 +8,8 @@ FUNCTION:  nbi provides a class and methods to incorporate non-blocking command
            msg-s).  It is compatible with Python 2.7.16 and all versions of
            Python 3.x.
   AUTHOR:  papamac
- VERSION:  1.0.1
-    DATE:  January 5, 2020
+ VERSION:  1.0.2
+    DATE:  May 20, 2020
 
 
 MIT LICENSE:
@@ -44,16 +44,19 @@ DEPENDENCIES/LIMITATIONS:
 ****************************** needs work *************************************
 
 """
-__author__ = 'papamac'
-__version__ = '1.0.1'
-__date__ = 'January 5, 2020'
 
+__author__ = 'papamac'
+__version__ = '1.0.2'
+__date__ = 'May 20, 2020'
 
 from queue import Queue, Empty
 from threading import Thread
 
 
 class NBI(Thread):
+    """
+    **************************** needs work ***********************************
+    """
 
     _queue = Queue()
 

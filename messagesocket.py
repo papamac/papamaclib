@@ -7,8 +7,8 @@ FUNCTION:  Provides classes and methods to reliably receive and send fixed-
    USAGE:  messagesocket is imported and used within main programs.  It is
            compatible with Python 2.7.16 and all versions of Python 3.x.
   AUTHOR:  papamac
- VERSION:  1.0.15
-    DATE:  May 19, 2020
+ VERSION:  1.1.0
+    DATE:  May 20, 2020
 
 
 MIT LICENSE:
@@ -43,10 +43,10 @@ DEPENDENCIES/LIMITATIONS:
 ****************************** needs work *************************************
 
 """
-__author__ = 'papamac'
-__version__ = '1.0.15'
-__date__ = 'May 18, 2020'
 
+__author__ = 'papamac'
+__version__ = '1.1.0'
+__date__ = 'May 20, 2020'
 
 from binascii import crc32
 from datetime import datetime
@@ -56,7 +56,6 @@ from socket import *
 from threading import Thread, Lock
 
 from .colortext import getLogger
-
 
 # Global constants:
 
@@ -97,6 +96,9 @@ def next_seq(seq):
 
 
 class MessageSocket(Thread):
+    """
+    **************************** needs work ***********************************
+    """
 
     # Private methods.
 
@@ -346,6 +348,9 @@ class MessageSocket(Thread):
 
 
 class MessageStatus:
+    """
+    **************************** needs work ***********************************
+    """
 
     # Private methods:
 
@@ -446,6 +451,7 @@ class MessageStatus:
 
 class MessageServer:
     """
+    **************************** needs work ***********************************
     """
     # Private methods:
 

@@ -47,10 +47,10 @@ DEPENDENCIES/LIMITATIONS:
 ****************************** needs work *************************************
 
 """
+
 __author__ = 'papamac'
 __version__ = '1.0.7'
 __date__ = 'May 18, 2020'
-
 
 from argparse import ArgumentParser
 import logging
@@ -61,14 +61,12 @@ from pathlib import Path
 from . import colortext
 from .colortext import DATA, THREADDEBUG
 
-
-# Global constant.
-
 LOG = colortext.getLogger('Plugin')
 
 
 class AL:
     """
+    **************************** needs work ***********************************
     """
     _log = logging.getLogger('Plugin')
     parser = ArgumentParser()
