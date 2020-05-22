@@ -11,8 +11,8 @@ FUNCTION:  argsandlogs provides generalized definition and parsing of
            because of its use of the pathlib package and also because it uses
            the reserved function name print as a variable.
   AUTHOR:  papamac
- VERSION:  1.0.7
-    DATE:  May 16, 2020
+ VERSION:  1.0.8
+    DATE:  May 22, 2020
 
 
 MIT LICENSE:
@@ -49,8 +49,8 @@ DEPENDENCIES/LIMITATIONS:
 """
 
 __author__ = 'papamac'
-__version__ = '1.0.7'
-__date__ = 'May 18, 2020'
+__version__ = '1.0.8'
+__date__ = 'May 22, 2020'
 
 from argparse import ArgumentParser
 import logging
@@ -68,6 +68,7 @@ class AL:
     """
     **************************** needs work ***********************************
     """
+
     _log = logging.getLogger('Plugin')
     parser = ArgumentParser()
     name = parser.prog.replace('.py', '')
