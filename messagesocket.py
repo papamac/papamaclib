@@ -7,8 +7,8 @@ FUNCTION:  Provides classes and methods to reliably receive and send fixed-
    USAGE:  messagesocket is imported and used within main programs.  It is
            compatible with Python 2.7.16 and all versions of Python 3.x.
   AUTHOR:  papamac
- VERSION:  1.1.0
-    DATE:  May 21, 2020
+ VERSION:  1.1.1
+    DATE:  May 22, 2020
 
 
 MIT LICENSE:
@@ -45,8 +45,8 @@ DEPENDENCIES/LIMITATIONS:
 """
 
 __author__ = 'papamac'
-__version__ = '1.1.0'
-__date__ = 'May 20, 2020'
+__version__ = '1.1.1'
+__date__ = 'May 22, 2020'
 
 from binascii import crc32
 from datetime import datetime
@@ -124,7 +124,6 @@ class MessageSocket(Thread):
         errors, perform shutdown for the first one and record a debug message
         for the second.
         """
-        
         LOG.threaddebug('MessageSocket._shutdown called "%s"', self.name)
         if self.connected:
             self.connected = False
@@ -232,7 +231,6 @@ class MessageSocket(Thread):
                      (>= recv_timeout), socket exceptions, and peer socket
                      disconnection.
         """
-
         LOG.threaddebug('MessageSocket.recv called "%s"', self.name)
         byte_msg = b''
         bytes_received = 0
@@ -290,7 +288,6 @@ class MessageSocket(Thread):
                      was shut down.  This happens for timeouts, socket
                      exceptions, and segment not sent.
         """
-
         LOG.threaddebug('MessageSocket.send called "%s"', self.name)
 
         # Remove blanks and truncate message if necessary.
@@ -377,7 +374,6 @@ class MessageStatus:
         """
         Report accumulated status data if the status interval has expired.
         """
-
         LOG.threaddebug('MessageStatus._report called "%s"', self._name)
         with self._lock:
             interval = (datetime.now() - self._status_dt).total_seconds()
@@ -410,7 +406,6 @@ class MessageStatus:
         header if no errors are found, or a null message otherwise (soft
         error).
         """
-
         LOG.threaddebug('MessageStatus.recv called "%s"', self._name)
         if len(message) < HDR_LEN:  # Check for short message.
             self._shorts += 1
