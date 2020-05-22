@@ -11,8 +11,8 @@ FUNCTION:  colortext provides globally-defined ASCII escape sequences and a
            modules.  It is compatible with Python 2.7.16 and all versions of
            Python 3.x.
   AUTHOR:  papamac
- VERSION:  1.0.8
-    DATE:  May 20, 2020
+ VERSION:  1.0.9
+    DATE:  May 22, 2020
 
 
 MIT LICENSE:
@@ -49,8 +49,8 @@ DEPENDENCIES/LIMITATIONS:
 """
 
 __author__ = 'papamac'
-__version__ = '1.0.8'
-__date__ = 'May 30, 2020'
+__version__ = '1.0.9'
+__date__ = 'May 22, 2020'
 
 import logging
 from logging import DEBUG, INFO, WARNING, ERROR, CRITICAL
@@ -91,6 +91,7 @@ class ColortextLogger(logging.LoggerAdapter):
     """
     **************************** needs work ***********************************
     """
+
     def __init__(self, logger, extra=None):
         if extra is None:
             extra = {'extra': ''}

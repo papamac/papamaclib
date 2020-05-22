@@ -8,7 +8,7 @@ FUNCTION:  Provides classes and methods to reliably receive and send fixed-
            compatible with Python 2.7.16 and all versions of Python 3.x.
   AUTHOR:  papamac
  VERSION:  1.1.0
-    DATE:  May 20, 2020
+    DATE:  May 21, 2020
 
 
 MIT LICENSE:
@@ -91,7 +91,7 @@ def set_status_interval(status_interval):  # Allow using modules to change the
 
 
 def next_seq(seq):
-    LOG.threaddebug('messagesocket.next_seq called')
+    # LOG.threaddebug('messagesocket.next_seq called')
     return seq + 1 if seq < 0xffffffff else 0
 
 
@@ -104,14 +104,13 @@ class MessageSocket(Thread):
 
     def __init__(self, reference_name=None, disconnected=None,
                  process_message=None, recv_timeout=0.0):
-        Thread.__init__(self)
         LOG.threaddebug('MessageSocket.__init__ called')
+        Thread.__init__(self, name='MessageSocket init')
         self._reference_name = reference_name
         self._disconnected = disconnected
         self._process_message = process_message
         self._recv_timeout = recv_timeout
         self._socket = None
-        self._name = None
         self._status = None
         self._recvd_dt = datetime.now()
         self._send_seq = 0
@@ -125,7 +124,8 @@ class MessageSocket(Thread):
         errors, perform shutdown for the first one and record a debug message
         for the second.
         """
-        LOG.threaddebug('MessageSocket._shutdown called')
+        
+        LOG.threaddebug('MessageSocket._shutdown called "%s"', self.name)
         if self.connected:
             self.connected = False
             self.running = False
@@ -200,7 +200,7 @@ class MessageSocket(Thread):
         self.send(gethostname())
 
     def run(self):
-        LOG.threaddebug('MessageSocket.run called')
+        LOG.threaddebug('MessageSocket.run called "%s"', self.name)
         self.running = self.connected
         while self.running:
             message = self.recv()
@@ -208,7 +208,7 @@ class MessageSocket(Thread):
                 self._process_message(self._reference_name, message)
 
     def stop(self):
-        LOG.threaddebug('MessageSocket.stop called')
+        LOG.threaddebug('MessageSocket.stop called "%s"', self.name)
         self.running = False
         if self.is_alive():
             self.join()
@@ -232,7 +232,8 @@ class MessageSocket(Thread):
                      (>= recv_timeout), socket exceptions, and peer socket
                      disconnection.
         """
-        LOG.threaddebug('MessageSocket.recv called')
+
+        LOG.threaddebug('MessageSocket.recv called "%s"', self.name)
         byte_msg = b''
         bytes_received = 0
         while bytes_received < MSG_LEN:
@@ -289,7 +290,8 @@ class MessageSocket(Thread):
                      was shut down.  This happens for timeouts, socket
                      exceptions, and segment not sent.
         """
-        LOG.threaddebug('MessageSocket.send called')
+
+        LOG.threaddebug('MessageSocket.send called "%s"', self.name)
 
         # Remove blanks and truncate message if necessary.
 
@@ -355,7 +357,7 @@ class MessageStatus:
     # Private methods:
 
     def __init__(self, name):
-        LOG.threaddebug('MessageStatus.__init__ called')
+        LOG.threaddebug('MessageStatus.__init__ called "%s"', name)
         self._name = name
         self._lock = Lock()
         self._min = None
@@ -364,7 +366,7 @@ class MessageStatus:
         self._init()
 
     def _init(self):
-        LOG.threaddebug('MessageStatus._init called')
+        LOG.threaddebug('MessageStatus._init called "%s"', self._name)
         self._shorts = self._crc_errs = self._dt_errs = self._seq_errs = 0
         self._recvd = self._sent = 0
         self._min = 1000000.0
@@ -375,7 +377,8 @@ class MessageStatus:
         """
         Report accumulated status data if the status interval has expired.
         """
-        LOG.threaddebug('MessageStatus._report called')
+
+        LOG.threaddebug('MessageStatus._report called "%s"', self._name)
         with self._lock:
             interval = (datetime.now() - self._status_dt).total_seconds()
             if interval >= STATUS_INTERVAL:
@@ -407,7 +410,8 @@ class MessageStatus:
         header if no errors are found, or a null message otherwise (soft
         error).
         """
-        LOG.threaddebug('MessageStatus.recv called')
+
+        LOG.threaddebug('MessageStatus.recv called "%s"', self._name)
         if len(message) < HDR_LEN:  # Check for short message.
             self._shorts += 1
             self._report()
@@ -444,7 +448,7 @@ class MessageStatus:
         return message[HDR_LEN:]  # Good message; return it without header.
 
     def send(self):
-        LOG.threaddebug('MessageStatus.send called')
+        LOG.threaddebug('MessageStatus.send called "%s"', self._name)
         self._sent += 1
         self._report()
 
@@ -453,6 +457,7 @@ class MessageServer:
     """
     **************************** needs work ***********************************
     """
+
     # Private methods:
 
     def __init__(self, port_number, get_message=None, process_request=None):
